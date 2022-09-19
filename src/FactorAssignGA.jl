@@ -291,7 +291,19 @@ function create_initial_population_random(actions,popsize=30;kwargs...)
     end 
     return population
 end 
+"""
+    FactorAssignGA(design,factors,types;num_generations=50,popsize=30)
+Automatically place experiments on a plate to minimize manual pipetting
 
+# Arguments
+- `design`: the design dataframe
+- `factors`: An array listing the relevant factors in the design
+- `types`: An array listing the type of each factor. Must be "auto", "col","wafer", or "plate".
+# Keyword Arguments
+- `num_generations`: The number of generations the GA should run. 
+- `popsize`: The GA population size.
+
+"""
 function FactorAssignGA(design::DataFrame,factors::Array{String,1},types::Array{String,1};num_generations::Int64=50,popsize::Int64=30,selection=softmax,crossover=crossover_independent,kwargs...)
 
     ##Initialize the solution format and initial population
@@ -333,7 +345,15 @@ function FactorAssignGA(design::DataFrame,factors::Array{String,1},types::Array{
     
     return plate
 end 
+"""
+    UpdateDesign(design,plate)
+Add the well locations for each experiment to the design dataframe
 
+# Arguments
+- `design`: the design dataframe
+- `plate`: the array containing the well locations for each experiment.
+
+"""
 function UpdateDesign(design,plate)
     updated=[]
     row,col,n_plates=size(plate)
