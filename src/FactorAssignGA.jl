@@ -364,7 +364,7 @@ function UpdateDesign(design,plate)
         expts=sort(setdiff(unique(plate[:,:,i]),[0]))
         for expt in expts
             idxs=findall(x->x==expt,plate[:,:,i])[1]
-            push!(rows,alphabet[idxs[1]])
+            push!(rows,string(alphabet[idxs[1]]))
             push!(cols,idxs[2])
         end
         update=deepcopy(design)[expts,:]
