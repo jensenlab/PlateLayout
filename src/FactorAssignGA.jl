@@ -359,13 +359,14 @@ function UpdateDesign(design,plate)
     row,col,n_plates=size(plate)
     alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for i in 1:n_plates
-        rows=[]
-        cols=[]
+
         expts=sort(setdiff(unique(plate[:,:,i]),[0]))
-        for expt in expts
-            idxs=findall(x->x==expt,plate[:,:,i])[1]
-            push!(rows,string(alphabet[idxs[1]]))
-            push!(cols,idxs[2])
+        rows=["!" for i in eachindex(expts)]
+        cols=[0 for i in eachindex(expts)]
+        for j in eachindex(expts)
+            idxs=findall(x->x==expts[j],plate[:,:,i])[1]
+            rows[j]=string(alphabet[idxs[1]])
+            cols[j]=idxs[2]
         end
         update=deepcopy(design)[expts,:]
         insert!(update,ncol(design)+1,rows,:Row)
@@ -374,15 +375,16 @@ function UpdateDesign(design,plate)
     end 
     return updated
 end
+#=
+design = CSV.read("test_design.csv",DataFrame)
 
-#design = CSV.read("test_design.csv",DataFrame)
-
-#factors=["A","B","C","D"]
+factors=["A","B","C","D"]
     
-#types=["auto","col","auto","wafer"] #auto, col, wafer, plate
+types=["auto","col","auto","wafer"] #auto, col, wafer, plate
 
 
 
-#plate=FactorAssignGA(design,factors,types)
+plate=FactorAssignGA(design,factors,types)
 
-#new_design=UpdateDesign(design,plate)
+new_design=UpdateDesign(design,plate)
+=#
