@@ -12,7 +12,7 @@ Automatically generate plate layouts that minimize the number of manual pipettin
  Requires installation of  [Julia](https://julialang.org/downloads/). Once Julia is installed. Install PlateLayout by navigating to package mode:  
 
 ```julia 
-add https://github.com/jensenlab/PlateLayout
+    add https://github.com/jensenlab/PlateLayout
 ```
 
 # FactorAssignGA 
