@@ -28,7 +28,7 @@ function plates_upper_bound(design::DataFrame,factors::Array{String,1},types::Ar
                 col_design_matrix[i,j]=col_design[i][j]
             end
         end
-        col_design=DataFrame(col_design_matrix)
+        col_design=DataFrame(col_design_matrix,:auto)
         rename!(col_design,non_auto_factors)
         if !("wafer" in non_auto_types)
         n_full_cols=[sum(n_cols)]
@@ -53,7 +53,7 @@ function plates_upper_bound(design::DataFrame,factors::Array{String,1},types::Ar
                 wafer_design_matrix[i,j]=wafer_design[i][j]
             end
         end 
-        wafer_design=DataFrame(wafer_design_matrix)
+        wafer_design=DataFrame(wafer_design_matrix,:auto)
         rename!(wafer_design,wafer_plate_factors)
         if !("plate" in wafer_plate_types)
             n_full_wafers=[sum(n_wafers)]
@@ -369,8 +369,8 @@ function UpdateDesign(design,plate)
             cols[j]=idxs[2]
         end
         update=deepcopy(design)[expts,:]
-        insert!(update,ncol(design)+1,rows,:Row)
-        insert!(update,ncol(design)+2,cols,:Col)
+        update[:,:Row]=rows
+        update[:,:Col]=cols
         push!(updated,update)
     end 
     return updated
