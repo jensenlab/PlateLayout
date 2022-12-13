@@ -282,7 +282,7 @@ function softmax(population;k=1,kwargs...)
     return population[cutoff]
 end 
 
-function create_initial_population_random(actions,popsize=30;kwargs...)
+function create_initial_population_random(actions,popsize=30)
     population=[Int.(zeros(length(actions))) for i =1:popsize]
     for i=1:popsize
         for j in eachindex(actions)
@@ -304,13 +304,13 @@ Automatically place experiments on a plate to minimize manual pipetting
 - `popsize`: The GA population size.
 
 """
-function FactorAssignGA(design::DataFrame,factors::Array{String,1},types::Array{String,1};num_generations::Int64=50,popsize::Int64=30,selection=softmax,crossover=crossover_independent,kwargs...)
+function FactorAssignGA(design::DataFrame,factors::Array{String,1},types::Array{String,1};num_generations::Int64=50,popsize=30,selection=softmax,crossover=crossover_independent,kwargs...)
 
     ##Initialize the solution format and initial population
     n_plates=plates_upper_bound(design,factors,types)
     sol_factors,sol_types=initialize_solution(factors,types,n_plates)
     actions=action_space.((design,),sol_factors)
-    population=create_initial_population_random(actions;kwargs...)
+    population=create_initial_population_random(actions,popsize)
 
 
     ##Define fitness, mutate, evaluate functions
@@ -384,7 +384,7 @@ types=["auto","col","auto","wafer"] #auto, col, wafer, plate
 
 
 
-plate=FactorAssignGA(design,factors,types)
+plate=FactorAssignGA(design,factors,types;num_generations=100,popsize=40)
 
 new_design=UpdateDesign(design,plate)
 =#
